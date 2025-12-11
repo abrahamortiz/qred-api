@@ -1,0 +1,25 @@
+{
+  "name": "qred-api",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "start": "node dist/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:abrahamortiz/qred-api.git"
+  },
+  "keywords": [],
+  "author": "Abraham Ortiz",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^25.0.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.7"
+  }
+}
