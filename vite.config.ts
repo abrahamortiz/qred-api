@@ -9,9 +9,7 @@ export default defineConfig({
       fileName: "main",
     },
     rollupOptions: {
-      external: [
-        // Add external dependencies here (e.g., 'express', 'fastify')
-      ],
+      external: ["fastify", /^@fastify\/.*/],
     },
     outDir: "dist",
     ssr: true,
@@ -19,7 +17,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": resolve(__dirname, "./src"),
+      "@domain": resolve(__dirname, "./src/domain"),
+      "@application": resolve(__dirname, "./src/application"),
+      "@infrastructure": resolve(__dirname, "./src/infrastructure"),
+      "@shared": resolve(__dirname, "./src/shared"),
     },
   },
 });
