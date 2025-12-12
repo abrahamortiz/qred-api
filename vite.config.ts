@@ -9,7 +9,13 @@ export default defineConfig({
       fileName: "main",
     },
     rollupOptions: {
-      external: ["fastify", /^@fastify\/.*/],
+      external: [
+        "fastify",
+        /^@fastify\/.*/,
+        "typeorm",
+        "pg",
+        "reflect-metadata",
+      ],
     },
     outDir: "dist",
     ssr: true,
