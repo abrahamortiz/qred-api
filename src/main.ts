@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { Server } from "./infrastructure/http/server";
 
 const server = new Server();
