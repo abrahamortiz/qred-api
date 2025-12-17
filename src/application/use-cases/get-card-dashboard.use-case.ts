@@ -58,7 +58,7 @@ export class GetCardDashboardUseCase
     const card = await this.cardRepository.findOne({ where: { companyId } });
 
     if (!card) {
-      throw new NotFoundError(`Card with companyId ${companyId} not found`);
+      throw new NotFoundError(`No card found for company with id ${companyId}`);
     }
 
     // Get recent transactions for this card
