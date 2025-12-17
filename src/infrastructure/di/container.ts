@@ -15,6 +15,10 @@ import {
   TransactionRepository,
 } from "@infrastructure/database/repositories";
 
+// Services
+import { SpendingService } from "@domain/services/spending.service";
+import { InvoiceService } from "@domain/services/invoice.service";
+
 export const container = new Container();
 
 // Register repositories
@@ -36,4 +40,15 @@ container
 container
   .bind<ITransactionRepository>(TYPES.TransactionRepository)
   .to(TransactionRepository)
+  .inSingletonScope();
+
+// Register services
+container
+  .bind<SpendingService>(TYPES.SpendingService)
+  .to(SpendingService)
+  .inSingletonScope();
+
+container
+  .bind<InvoiceService>(TYPES.InvoiceService)
+  .to(InvoiceService)
   .inSingletonScope();
