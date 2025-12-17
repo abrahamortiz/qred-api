@@ -3,6 +3,7 @@ import { env } from "@infrastructure/config/env";
 import { AppDataSource } from "@infrastructure/database/data-source";
 import { errorHandlerPlugin } from "./plugins/error-handler.plugin";
 import { companyRoutes } from "./routes/company.routes";
+import { setupSwagger } from "./plugins/swagger.plugin";
 
 export class Server {
   private app: FastifyInstance;
@@ -33,12 +34,16 @@ export class Server {
     this.app.setErrorHandler(errorHandlerPlugin);
   }
 
+  private async setupSwagger(): Promise<void> {
+    await setupSwagger(this.app);
+  }
+
   private async initializeDatabase(): Promise<void> {
     try {
       await AppDataSource.initialize();
       this.app.log.info("Database connection established");
     } catch (error) {
-      this.app.log.error("Error connecting to database:", error);
+      this.app.log.error(error, "Error connecting to database");
       throw error;
     }
   }
@@ -50,7 +55,7 @@ export class Server {
           return { status: "ok", timestamp: new Date().toISOString() };
         });
       },
-      { prefix: "/api" }
+      { prefix: "/api" },
     );
 
     await this.app.register(companyRoutes, { prefix: "/api" });
@@ -59,6 +64,7 @@ export class Server {
   public async start(): Promise<void> {
     try {
       await this.initializeDatabase();
+      await this.setupSwagger();
       await this.registerRoutes();
 
       await this.app.listen({
