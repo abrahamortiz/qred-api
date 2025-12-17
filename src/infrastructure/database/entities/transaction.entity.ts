@@ -11,6 +11,7 @@ import {
 } from "typeorm";
 import { ITransaction } from "@domain/entities/transaction.entity.interface";
 import { Card } from "./card.entity";
+import { Invoice } from "./invoice.entity";
 
 @Entity({ name: "transactions" })
 export class Transaction implements ITransaction {
@@ -19,6 +20,12 @@ export class Transaction implements ITransaction {
 
   @Column({ type: "uuid", name: "card_id" })
   cardId!: string;
+
+  @Column({ type: "uuid", name: "invoice_id", nullable: true })
+  invoiceId!: string | null;
+
+  @Column({ type: "varchar" })
+  merchant!: string;
 
   @Column({ type: "decimal" })
   amount!: number;
@@ -42,4 +49,9 @@ export class Transaction implements ITransaction {
   @JoinColumn({ name: "card_id" })
   @Index()
   card!: Card;
+
+  @ManyToOne(() => Invoice, { onUpdate: "CASCADE", onDelete: "SET NULL" })
+  @JoinColumn({ name: "invoice_id" })
+  @Index()
+  invoice!: Invoice | null;
 }
