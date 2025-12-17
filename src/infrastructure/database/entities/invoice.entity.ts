@@ -8,6 +8,7 @@ import {
   DeleteDateColumn,
   Entity,
   Index,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -44,6 +45,7 @@ export class Invoice implements IInvoice {
   deletedAt!: Date | null;
 
   @ManyToOne(() => Company, (company) => company.invoices)
+  @JoinColumn({ name: "company_id" })
   @Index()
   company!: Company;
 }
