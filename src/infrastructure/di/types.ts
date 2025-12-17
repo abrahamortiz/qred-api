@@ -8,4 +8,7 @@ export const TYPES = {
   // Services
   SpendingService: Symbol.for("SpendingService"),
   InvoiceService: Symbol.for("InvoiceService"),
+
+  // Use cases
+  GetCardDashboardUseCase: Symbol.for("GetCardDashboardUseCase"),
 } as const;

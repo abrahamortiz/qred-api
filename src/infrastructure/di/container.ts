@@ -19,6 +19,9 @@ import {
 import { SpendingService } from "@domain/services/spending.service";
 import { InvoiceService } from "@domain/services/invoice.service";
 
+// Use cases
+import { GetCardDashboardUseCase } from "@application/use-cases/get-card-dashboard.use-case";
+
 export const container = new Container();
 
 // Register repositories
@@ -52,3 +55,9 @@ container
   .bind<InvoiceService>(TYPES.InvoiceService)
   .to(InvoiceService)
   .inSingletonScope();
+
+// Register use cases
+container
+  .bind<GetCardDashboardUseCase>(TYPES.GetCardDashboardUseCase)
+  .to(GetCardDashboardUseCase)
+  .inRequestScope();
