@@ -15,7 +15,7 @@ export class SpendingService {
     card: ICard,
     transactions: ITransaction[]
   ): SpendingCalculation {
-    const totalSpent = transactions.reduce(
+    const totalSpent = (transactions || []).reduce(
       (sum, transaction) => sum + Number(transaction.amount),
       0
     );
