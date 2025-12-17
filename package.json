@@ -9,6 +9,7 @@
     "build": "vite build",
     "start": "node --env-file=.env dist/main.js",
     "db:create": "tsx --env-file=.env scripts/create-database.ts",
+    "db:seed": "tsx --env-file=.env src/infrastructure/database/seeders/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
