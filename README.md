@@ -147,13 +147,19 @@ cp .env.example .env
 ### Running Locally
 
 1. **Start Database** (ensure Postgres is running)
-2. **Seed Database** (Optional, creates sample data):
+2. **Create Database**:
+
+   ```bash
+   pnpm db:create
+   ```
+
+3. **Seed Database** (Optional, creates sample data):
 
    ```bash
    pnpm db:seed
    ```
 
-3. **Start Dev Server**:
+4. **Start Dev Server**:
 
    ```bash
    pnpm dev
