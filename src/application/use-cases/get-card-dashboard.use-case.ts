@@ -23,8 +23,7 @@ export interface GetCardDashboardInput {
 
 @injectable()
 export class GetCardDashboardUseCase
-  implements UseCase<GetCardDashboardInput, CardDashboardResponseDto>
-{
+  implements UseCase<GetCardDashboardInput, CardDashboardResponseDto> {
   constructor(
     @inject(TYPES.CompanyRepository)
     private readonly companyRepository: ICompanyRepository,
@@ -38,7 +37,7 @@ export class GetCardDashboardUseCase
     private readonly spendingService: SpendingService,
     @inject(TYPES.InvoiceService)
     private readonly invoiceService: InvoiceService,
-  ) {}
+  ) { }
 
   async execute(
     input: GetCardDashboardInput,
@@ -66,6 +65,11 @@ export class GetCardDashboardUseCase
       where: { cardId: card.id },
       limit: 3,
       orderBy: { field: "transactionDate", direction: "desc" },
+    });
+
+    // Get total count of transactions for this card
+    const totalTransactionsCount = await this.transactionRepository.count({
+      where: { cardId: card.id },
     });
 
     // Get transactions without invoice
@@ -120,7 +124,7 @@ export class GetCardDashboardUseCase
 
     const transactionsDto: TransactionsDto = {
       items: transactionItems,
-      totalCount: recentTransactions.length,
+      totalCount: totalTransactionsCount,
     };
 
     return {

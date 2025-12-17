@@ -12,9 +12,8 @@ import {
 } from "typeorm";
 
 export abstract class BaseRepositoryImpl<T extends ObjectLiteral, ID>
-  implements BaseRepository<T, ID>
-{
-  constructor(protected readonly repository: Repository<T>) {}
+  implements BaseRepository<T, ID> {
+  constructor(protected readonly repository: Repository<T>) { }
 
   async findOne(options?: FindOneOptions<T>): Promise<T | null> {
     if (!options?.where) {
@@ -54,6 +53,17 @@ export abstract class BaseRepositoryImpl<T extends ObjectLiteral, ID>
       take: options?.limit,
       skip: options?.offset,
       order,
+    });
+  }
+
+  async count(options?: FindManyOptions<T>): Promise<number> {
+    const where =
+      options?.where && typeof options.where !== "function"
+        ? (options.where as FindOptionsWhere<T>)
+        : undefined;
+
+    return this.repository.count({
+      where,
     });
   }
 

@@ -19,6 +19,7 @@ export type FindOneOptions<T> = {
 export interface BaseRepository<T, ID> {
   findOne(options?: FindOneOptions<T>): Promise<T | null>;
   findMany(options?: FindManyOptions<T>): Promise<T[]>;
+  count(options?: FindManyOptions<T>): Promise<number>;
   save(entity: T): Promise<T>;
   delete(id: ID): Promise<void>;
 }

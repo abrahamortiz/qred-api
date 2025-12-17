@@ -99,6 +99,7 @@ describe("GetCardDashboardUseCase", () => {
       save: jest.fn(),
       delete: jest.fn(),
       findByName: jest.fn(),
+      count: jest.fn(),
     } as jest.Mocked<ICompanyRepository>;
 
     cardRepository = {
@@ -108,6 +109,7 @@ describe("GetCardDashboardUseCase", () => {
       delete: jest.fn(),
       findByCompanyId: jest.fn(),
       findByStatus: jest.fn(),
+      count: jest.fn(),
     } as jest.Mocked<ICardRepository>;
 
     invoiceRepository = {
@@ -117,6 +119,7 @@ describe("GetCardDashboardUseCase", () => {
       delete: jest.fn(),
       findByCompanyId: jest.fn(),
       findByStatus: jest.fn(),
+      count: jest.fn(),
     } as jest.Mocked<IInvoiceRepository>;
 
     transactionRepository = {
@@ -126,6 +129,7 @@ describe("GetCardDashboardUseCase", () => {
       delete: jest.fn(),
       findByCardId: jest.fn(),
       findByDateRange: jest.fn(),
+      count: jest.fn(),
     } as jest.Mocked<ITransactionRepository>;
 
     // Create real service instances
@@ -144,6 +148,11 @@ describe("GetCardDashboardUseCase", () => {
   });
 
   describe("execute", () => {
+    // Add default mock for count to avoid obscure errors if we miss it in a specific test
+    beforeEach(() => {
+      transactionRepository.count.mockResolvedValue(0);
+    });
+
     it("should return card dashboard data successfully", async () => {
       // Arrange
       companyRepository.findOne.mockResolvedValue(mockCompany);
@@ -154,6 +163,8 @@ describe("GetCardDashboardUseCase", () => {
       transactionRepository.findMany
         .mockResolvedValueOnce(mockTransactions) // First call: recent transactions
         .mockResolvedValueOnce(mockTransactions); // Second call: transactions for spending
+
+      transactionRepository.count.mockResolvedValue(2);
 
       // Act
       const result = await useCase.execute({ companyId: "company-1" });
@@ -198,6 +209,9 @@ describe("GetCardDashboardUseCase", () => {
         "company-1",
       );
       expect(transactionRepository.findMany).toHaveBeenCalledTimes(2);
+      expect(transactionRepository.count).toHaveBeenCalledWith({
+        where: { cardId: 'card-1' },
+      });
     });
 
     it("should throw NotFoundError when company does not exist", async () => {
@@ -287,6 +301,8 @@ describe("GetCardDashboardUseCase", () => {
         .mockResolvedValueOnce([])
         .mockResolvedValueOnce([]);
 
+      transactionRepository.count.mockResolvedValue(0);
+
       // Act
       const result = await useCase.execute({ companyId: "company-1" });
 
@@ -329,12 +345,14 @@ describe("GetCardDashboardUseCase", () => {
         .mockResolvedValueOnce(manyTransactions.slice(0, 3))
         .mockResolvedValueOnce(manyTransactions);
 
+      transactionRepository.count.mockResolvedValue(15);
+
       // Act
       const result = await useCase.execute({ companyId: "company-1" });
 
       // Assert
       expect(result.transactions.items).toHaveLength(3);
-      expect(result.transactions.totalCount).toBe(3);
+      expect(result.transactions.totalCount).toBe(15);
       // Verify spending calculation used all 15 transactions
       expect(result.card.spending.used).toBe(15000);
     });
