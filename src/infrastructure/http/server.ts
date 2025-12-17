@@ -2,6 +2,7 @@ import Fastify, { FastifyInstance } from "fastify";
 import { env } from "@infrastructure/config/env";
 import { AppDataSource } from "@infrastructure/database/data-source";
 import { errorHandlerPlugin } from "./plugins/error-handler.plugin";
+import { companyRoutes } from "./routes/company.routes";
 
 export class Server {
   private app: FastifyInstance;
@@ -49,8 +50,10 @@ export class Server {
           return { status: "ok", timestamp: new Date().toISOString() };
         });
       },
-      { prefix: "/api" },
+      { prefix: "/api" }
     );
+
+    await this.app.register(companyRoutes, { prefix: "/api" });
   }
 
   public async start(): Promise<void> {
