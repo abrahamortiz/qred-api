@@ -31,6 +31,9 @@ export class Invoice implements IInvoice {
   @Column({ type: "enum", enum: InvoiceStatus })
   status!: InvoiceStatus;
 
+  @Column({ type: "date", name: "due_date" })
+  dueDate!: Date;
+
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;
 

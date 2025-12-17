@@ -12,5 +12,6 @@ export interface IInvoice extends IBaseEntity {
   amount: number;
   currency: string;
   status: InvoiceStatus;
+  dueDate: Date;
   company: ICompany;
 }
